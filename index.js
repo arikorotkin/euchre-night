@@ -12,6 +12,7 @@ const app = express()
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({extended: true}))
 
 const server = http.createServer(app);
 const gameServer = new colyseus.Server({
@@ -19,7 +20,7 @@ const gameServer = new colyseus.Server({
 });
 
 // register your room handlers
-gameServer.define('my_room', MyRoom);
+gameServer.define('euchre', MyRoom);
 
 /**
  * Register @colyseus/social routes
@@ -31,6 +32,7 @@ gameServer.define('my_room', MyRoom);
 
 // register colyseus monitor AFTER registering your room handlers
 app.use("/colyseus", monitor());
+app.use('/api', require('./api'))
 
 gameServer.listen(port);
 console.log(`Listening on ws://localhost:${ port }`)

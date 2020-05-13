@@ -1,7 +1,28 @@
 const db = require('../db')
+const {Card} = require('../db/models')
+
+const cards = []
+
+const suits = ['spades', 'diamonds', 'clubs', 'hearts']
+
+for (let i = 9; i <= 14; i++) {
+  for (let j = 0; j < 4; j++) {
+    cards.push({
+      value: i,
+      suit: suits[j],
+      threePlayer: i === 9 ? false : true
+    })
+  }
+}
 
 async function seed() {
     await db.sync({force: true})
+
+    const seedCards = async () => {
+      await Promise.all(cards.map(card => Card.create(card)))
+    }
+
+    await seedCards()
 }
 
 async function runSeed() {

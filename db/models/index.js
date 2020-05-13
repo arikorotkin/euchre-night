@@ -3,12 +3,16 @@ const Game = require('./game')
 const Hand = require('./hand')
 const Player = require('./player')
 const Round = require('./round')
+const Score = require('./score')
 const Team = require('./team')
 const Trick = require('./trick')
 
 Game.hasMany(Round)
 Game.belongsTo(Team, { as: 'winner' })
 Game.belongsTo(Team, { as: 'loser' })
+
+Game.belongsToMany(Team, { through: Score })
+Team.belongsToMany(Game, { through: Score })
 
 Hand.belongsToMany(Card, { through: 'hand_card' })
 Card.belongsToMany(Hand, { through: 'hand_card' })
