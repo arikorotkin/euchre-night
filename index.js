@@ -5,7 +5,7 @@ const colyseus = require('colyseus');
 const monitor = require("@colyseus/monitor").monitor;
 // const socialRoutes = require("@colyseus/social/express").default;
 
-const MyRoom = require('./MyRoom').MyRoom;
+// const EuchreRoom = require('../rooms/MyRoom').EuchreRoom;
 
 const port = process.env.PORT || 2567;
 const app = express()
@@ -20,7 +20,8 @@ const gameServer = new colyseus.Server({
 });
 
 // register your room handlers
-gameServer.define('euchre', MyRoom);
+// gameServer.define('euchre_room', EuchreRoom)
+//   .enableRealtimeListing();
 
 /**
  * Register @colyseus/social routes
@@ -33,6 +34,7 @@ gameServer.define('euchre', MyRoom);
 // register colyseus monitor AFTER registering your room handlers
 app.use("/colyseus", monitor());
 app.use('/api', require('./api'))
+app.use(express.static('public'))
 
 gameServer.listen(port);
 console.log(`Listening on ws://localhost:${ port }`)
